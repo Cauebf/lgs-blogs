@@ -1,32 +1,15 @@
 import BlogCard from "@/components/BlogCard";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
+import prisma from "@/lib/db";
 
-const blogs = [
-  {
-    title: "Blog 1",
-    description: "Description 1",
-    image: "https://picsum.photos/1280/720",
-    date: "3/10/2024",
-    creator: "John Doe",
-  },
-  {
-    title: "Blog 2",
-    description: "Description 2",
-    image: "https://picsum.photos/1280/720",
-    date: "3/10/2024",
-    creator: "John Doe",
-  },
-  {
-    title: "Blog 3",
-    description: "Description 3",
-    image: "https://picsum.photos/1280/720",
-    date: "3/10/2024",
-    creator: "John Doe",
-  },
-];
-
-export default function Home() {
+export default async function Home() {
+  const blogs = await prisma.blog.findMany({
+    orderBy: {
+      createdAt: 'desc', 
+    },
+  })
+  
   return (
     <>
       <Header />
@@ -35,7 +18,7 @@ export default function Home() {
 
         <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
-            <li key={blog.title}>
+            <li key={blog.id}>
               <BlogCard blog={blog} />
             </li>
           ))}
