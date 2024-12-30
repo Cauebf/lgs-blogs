@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import Image from "next/image";
+import { Blog } from "@/types/types";
 
-const BlogCard = ({ blog }: { blog: any }) => {
+const BlogCard = ({ blog }: { blog: Blog }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <img
+      <Image
         src={blog.image}
         alt={blog.title}
         className="w-full h-40 object-cover"
