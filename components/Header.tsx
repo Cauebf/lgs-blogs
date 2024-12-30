@@ -4,9 +4,9 @@ const Header = () => {
   return (
     <header className="bg-slate-500 shadow">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center">
+        <Link href="/">
           <h1 className="ml-2 text-xl font-semibold text-white">LGS Blogs</h1>
-        </div>
+        </Link>
 
         <nav>
           <ul className="flex space-x-6">
