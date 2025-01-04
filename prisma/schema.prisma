@@ -4,27 +4,32 @@ generator client {
 
 datasource db {
     provider  = "postgresql"
-    // Uses connection pooling
     url       = env("POSTGRES_PRISMA_URL")
-    // Uses direct connection, ⚠️ make sure to keep this to `POSTGRES_URL_NON_POOLING`
-    // or you'll have dangling databases from migrations
     directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
     id    Int    @id @default(autoincrement())
     name  String
-    email String
+    email String @unique
     image String
     blogs Blog[]
 }
 
 model Blog {
-    id          Int      @id @default(autoincrement())
+    id          Int        @id @default(autoincrement())
     title       String
     description String
     image       String
+    content     String
     creator_id  Int
-    createdAt   DateTime @default(now())
-    User        User?    @relation(fields: [creator_id], references: [id])
+    createdAt   DateTime   @default(now())
+    categories  Category[] @relation("BlogCategories")
+    User        User?      @relation(fields: [creator_id], references: [id])
+}
+
+model Category {
+    id    Int    @id @default(autoincrement())
+    name  String
+    blogs Blog[] @relation("BlogCategories")
 }

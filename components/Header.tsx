@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SignIn from "./SignInButton";
 
 const Header = () => {
   return (
@@ -16,10 +17,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/create" className="text-white">
+              <Link href="/blog/create" className="text-white">
                 Create New Blog
               </Link>
             </li>
+            <SignIn />
           </ul>
         </nav>
       </div>
