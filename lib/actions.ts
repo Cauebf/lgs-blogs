@@ -3,28 +3,28 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
-
-export type State = {
-  errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
-  };
-  message?: string | null;
-};
+import { blogSchema } from "./validation/blogSchema";
 
 export async function getUser(email: string) {
-  return await prisma.user.findFirst({ where: { email } });
+  try {
+    return await prisma.user.findFirst({ where: { email } });
+  } catch (error) {
+    throw new Error("Database Error: Failed to Get User.");
+  }
 }
 
 export async function createUser(email: string, name: string, image: string) {
-  return await prisma.user.create({
-    data: {
-      email,
-      name,
-      image,
-    },
-  });
+  try {
+    return await prisma.user.create({
+      data: {
+        email,
+        name,
+        image,
+      },
+    });
+  } catch (error) {
+    throw new Error("Database Error: Failed to Create User.");
+  }
 }
 
 export async function getBlogs() {
@@ -39,35 +39,36 @@ export async function getCategories() {
   });
 }
 
-export async function createBlog({
-  title,
-  description,
-  image,
-  content,
-  categoryIds,
-}: {
-  title: string;
-  description: string;
-  image: string;
-  content: string;
-  categoryIds: number[];
-}) {
-  if (
-    !title ||
-    !description ||
-    !image ||
-    !content ||
-    categoryIds.length === 0
-  ) {
-    throw new Error("All fields are required.");
+export async function createBlog(formData: FormData, content: string) {
+  const validation = blogSchema.safeParse({
+    title: formData.get("title"),
+    description: formData.get("description"),
+    image: formData.get("image"),
+    categoryIds: formData
+      .getAll("category")
+      .map((categoryId) => parseInt(categoryId as string))
+      .filter((id) => !isNaN(id)),
+    content,
+  });
+
+  if (!validation.success) {
+    return {
+      errors: validation.error.flatten().fieldErrors,
+      message: "Failed to Create Invoice.",
+    };
   }
 
   const session = await auth();
   if (!session) {
-    throw new Error("You must be signed in to create a blog.");
+    return {
+      errors: {},
+      message: "Please sign in to create a blog.",
+    };
   }
   const email = session?.user?.email!;
   const user = await getUser(email);
+
+  const { title, description, image, categoryIds } = validation.data;
 
   try {
     await prisma.blog.create({
@@ -84,6 +85,7 @@ export async function createBlog({
     });
 
     revalidatePath("/");
+    return { message: "Blog created successfully!", error: null };
   } catch (error) {
     console.error("Error creating blog:", error);
     throw new Error("Failed to create blog.");
