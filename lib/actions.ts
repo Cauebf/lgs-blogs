@@ -65,7 +65,7 @@ export async function createBlog(formData: FormData, content: string) {
       message: "Please sign in to create a blog.",
     };
   }
-  const email = session?.user?.email!;
+  const email = session?.user?.email as string;
   const user = await getUser(email);
 
   const { title, description, image, categoryIds } = validation.data;

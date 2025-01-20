@@ -7,7 +7,12 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { State } from "@/types/types";
 import { createBlog } from "@/lib/actions";
-import { ToastContainer, ToastOptions, ToastPosition, toast } from "react-toastify";
+import {
+  ToastContainer,
+  ToastOptions,
+  ToastPosition,
+  toast,
+} from "react-toastify";
 
 const animatedComponents = makeAnimated();
 
@@ -52,10 +57,9 @@ const BlogForm = ({ categories }: { categories: Category[] }) => {
     <>
       <form
         action={formAction}
-        className="flex flex-col space-y-4 max-w-2xl bg-slate-300 rounded-lg p-8"
+        className="flex flex-col space-y-4 max-w-2xl bg-white rounded-lg shadow-lg p-8"
       >
-        <h1 className="text-2xl font-bold text-center">Create a New Blog</h1>
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           <label htmlFor="title" className="font-bold">
             TITLE
           </label>
@@ -77,7 +81,7 @@ const BlogForm = ({ categories }: { categories: Category[] }) => {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           <label htmlFor="description" className="font-bold">
             DESCRIPTION
           </label>
@@ -99,7 +103,7 @@ const BlogForm = ({ categories }: { categories: Category[] }) => {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           <label htmlFor="image" className="font-bold">
             IMAGE URL
           </label>
@@ -121,7 +125,7 @@ const BlogForm = ({ categories }: { categories: Category[] }) => {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-1">
           <label htmlFor="category-select" className="font-bold">
             CATEGORY
           </label>
@@ -134,6 +138,34 @@ const BlogForm = ({ categories }: { categories: Category[] }) => {
             inputId="category-select"
             aria-describedby="categoryIds-error"
             placeholder="Select categories"
+            styles={{
+              control: (base, state) => ({
+                ...base,
+                paddingTop: "2px",
+                paddingBottom: "2px",
+                border: state.isFocused
+                  ? "2px solid black"
+                  : "1px solid #D1D5DB",
+                borderRadius: "0.5rem",
+                boxShadow: "none",
+                transition: "none",
+                "&:hover": {
+                  border: state.isFocused
+                    ? "2px solid black"
+                    : "1px solid #D1D5DB",
+                  boxShadow: "none",
+                },
+              }),
+              placeholder: (base) => ({
+                ...base,
+                color: "#9CA3AF",
+                transition: "none",
+              }),
+              singleValue: (base) => ({
+                ...base,
+                transition: "none",
+              }),
+            }}
           />
           <div id="categoryIds-error" aria-live="polite" aria-atomic="true">
             {state.errors?.categoryIds &&

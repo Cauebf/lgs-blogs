@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { Blog, User } from "@prisma/client";
+import { Blog } from "@prisma/client";
 import { convertDate } from "@/lib/utils";
 import prisma from "@/lib/db";
 
