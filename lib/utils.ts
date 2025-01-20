@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export function convertDate(date: Date) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "numeric",
+    day: "2-digit",
+    month: "2-digit",
     year: "numeric",
   });
   return formattedDate;

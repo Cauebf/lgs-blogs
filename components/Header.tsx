@@ -10,15 +10,21 @@ const Header = () => {
         </Link>
 
         <nav>
-          <ul className="flex space-x-6">
+          <ul className="flex space-x-6 items-center">
             <li>
-              <Link href="/" className="text-white">
+              <Link
+                href="/"
+                className="text-white hover:text-gray-200 transition-colors duration-200"
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/blog/create" className="text-white">
-                Create New Blog
+              <Link
+                href="/blog/create"
+                className="text-white hover:text-gray-200 transition-colors duration-200"
+              >
+                Create
               </Link>
             </li>
             <SignIn />

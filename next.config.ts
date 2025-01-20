@@ -5,11 +5,9 @@ const nextConfig: NextConfig = {
     ppr: "incremental",
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
+    domains: [
+      "picsum.photos",
+      "avatars.githubusercontent.com",
     ],
   },
 };

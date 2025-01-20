@@ -9,7 +9,7 @@ export async function getUser(email: string) {
   try {
     return await prisma.user.findFirst({ where: { email } });
   } catch (error) {
-    throw new Error("Database Error: Failed to Get User.");
+    throw new Error("Database Error: Failed to Get User.", { cause: error });
   }
 }
 
@@ -23,7 +23,7 @@ export async function createUser(email: string, name: string, image: string) {
       },
     });
   } catch (error) {
-    throw new Error("Database Error: Failed to Create User.");
+    throw new Error("Database Error: Failed to Create User.", { cause: error });
   }
 }
 
@@ -87,7 +87,6 @@ export async function createBlog(formData: FormData, content: string) {
     revalidatePath("/");
     return { message: "Blog created successfully!", error: null };
   } catch (error) {
-    console.error("Error creating blog:", error);
-    throw new Error("Failed to create blog.");
+    throw new Error("Failed to create blog.", { cause: error });
   }
 }
